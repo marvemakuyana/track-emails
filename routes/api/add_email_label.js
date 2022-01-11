@@ -14,7 +14,7 @@ const TOKEN_PATH = 'token.json';
 fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
  
-    authorize(JSON.parse(content), listMessages);
+    authorize(JSON.parse(content), addMessages);
 });
 
 
@@ -57,25 +57,24 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-function listMessages(auth, query){
+function addMessages(auth, query){
    
     return new Promise((resolve,reject) => {
         const gmail = google.gmail({version: 'v1', auth});
-        gmail.users.messages.list({
+        gmail.users.messages.modify({
             userId: 'me', 
-            labelIds: 'SPAM'
+            id: '17e3eaed8ba85aa4',
+            resource: {          
+                addLabelIds: 'Label_10',                
+              },  
           
         },(err,result) => {
             if(err){
                 reject(err);
                 return;
             }
-            if(!result.data.messages){
-                resolve([]);
-                return;
-            }
-            resolve(result.data);
-            res.send(result.data)
+            resolve(result);
+            res.send('Label has been added')
 
         }
         );

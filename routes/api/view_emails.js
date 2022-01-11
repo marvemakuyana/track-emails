@@ -58,12 +58,13 @@ function getNewToken(oAuth2Client, callback) {
 }
 
 function listMessages(auth, query){
-   
+    query = 'noreply@medium.com';
     return new Promise((resolve,reject) => {
         const gmail = google.gmail({version: 'v1', auth});
         gmail.users.messages.list({
             userId: 'me', 
-            labelIds: 'SPAM'
+            q: query,
+            maxResults: 5
           
         },(err,result) => {
             if(err){

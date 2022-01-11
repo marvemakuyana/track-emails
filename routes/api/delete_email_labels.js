@@ -14,7 +14,7 @@ const TOKEN_PATH = 'token.json';
 fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
  
-    authorize(JSON.parse(content), listMessages);
+    authorize(JSON.parse(content), deleteLabels);
 });
 
 
@@ -57,29 +57,18 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-function listMessages(auth, query){
-   
-    return new Promise((resolve,reject) => {
-        const gmail = google.gmail({version: 'v1', auth});
-        gmail.users.messages.list({
-            userId: 'me', 
-            labelIds: 'SPAM'
-          
-        },(err,result) => {
-            if(err){
-                reject(err);
-                return;
-            }
-            if(!result.data.messages){
-                resolve([]);
-                return;
-            }
-            resolve(result.data);
-            res.send(result.data)
 
+function deleteLabels(auth) {
+    const gmail = google.gmail({ version: 'v1', auth });
+    gmail.users.labels.delete({
+        userId: 'me',
+        id: 'Label_9'
+    }, (err, result) => {
+        if (err) return console.log('The API returned an error: ' + err);
+         else { 
+            res.send('Label has been deleted');
         }
-        );
-    })
+    });
 }
 
 });
