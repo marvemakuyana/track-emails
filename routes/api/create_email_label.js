@@ -68,7 +68,8 @@ function createLabels(auth) {
             name: 'MyLabel2'
         }
     }, (err, result) => {
-        if (err) return console.log('The API returned an error: ' + err);
+        if (err) 
+         res.send('The API returned an error: ' + err);
          else { 
             res.send(result.data);
         }

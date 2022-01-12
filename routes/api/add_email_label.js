@@ -71,7 +71,7 @@ function addMessages(auth, query){
         },(err,result) => {
             if(err){
                 reject(err);
-                return;
+                res.send('The API returned an error: ' + err);
             }
             resolve(result);
             res.send('Label has been added')

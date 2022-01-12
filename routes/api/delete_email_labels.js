@@ -64,7 +64,8 @@ function deleteLabels(auth) {
         userId: 'me',
         id: 'Label_9'
     }, (err, result) => {
-        if (err) return console.log('The API returned an error: ' + err);
+        if (err) 
+         res.send('The API returned an error: ' + err);
          else { 
             res.send('Label has been deleted');
         }

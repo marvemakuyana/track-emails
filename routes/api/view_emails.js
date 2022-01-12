@@ -14,7 +14,7 @@ const TOKEN_PATH = 'token.json';
 fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
  
-    authorize(JSON.parse(content), listMessages);
+    authorize(JSON.parse(content), listEmailMessages);
 });
 
 
@@ -57,9 +57,9 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-function listMessages(auth, query){
-    query = 'noreply@medium.com';
-    return new Promise((resolve,reject) => {
+function listEmailMessages(auth, query){
+    query = 'sarah@pdffiller.com';
+    //return new Promise((resolve,reject) => {
         const gmail = google.gmail({version: 'v1', auth});
         gmail.users.messages.list({
             userId: 'me', 
@@ -68,19 +68,36 @@ function listMessages(auth, query){
           
         },(err,result) => {
             if(err){
-                reject(err);
-                return;
+                res.send(err);
+               // return;
             }
-            if(!result.data.messages){
-                resolve([]);
-                return;
-            }
-            resolve(result.data);
-            res.send(result.data)
+            // if(!result.data.messages){
+            //     resolve([]);
+            //     return;
+            // }
+            // resolve(result.data);
+            printMessage(result.data.messages, auth)
 
         }
         );
-    })
+   // })
+}
+
+function printMessage(messageID, auth){
+    const gmail = google.gmail({version: 'v1', auth});
+    gmail.users.messages.get({
+        userId: 'me',
+        id: messageID[0].id
+    }, (err, result) => {
+        messageID.splice(0,1);
+        if(messageID.length > 0){
+            printMessage(messageID,auth)
+        } else{
+            res.send(result.data)
+           // res.send('Completed...')
+        }
+    }
+    );
 }
 
 });
