@@ -16,9 +16,9 @@ router.get("/", (req, res) => {
   });
 
   let mailOptions = {
-    from: "example@gmail.com",
-    to: "example@gmail.com, example@gmail.com",
-    subject: "Test",
+    from: "examples@gmail.com",
+    to: "examples@gmail.com, examples@gmail.com",
+    subject: "Test email",
     text: "Hello world... Sent from Node.js",
   };
 
